@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using JetBrains.Annotations;
 using System;
+using Baracuda.Monitoring;
 using TTT.Server.Network_Shared.Models;
 public class GameManager : MonoBehaviour {
     public static GameManager instance { get; private set; }
 
-    public Game activeGame;
-    public string myUserName{get;set;}
-    public string opponentUserName{get;private set;}
-    public MarkType myType{get;set;}
-    public MarkType opponentType{get;set;}
-
+    [Monitor] public Game activeGame;
+    [Monitor] public string myUserName{get;set;}
+    [Monitor] public string opponentUserName{get;private set;}
+    [Monitor] public MarkType myType{get;set;}
+    [Monitor] public MarkType opponentType{get;set;}
+    
     public bool IsMyTurn{
         get{
             if(activeGame == null){
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour {
     }
     public bool inputsEnable{get;set;}
     private void Awake() {
+        Monitor.StartMonitoring(this);
         if(instance != null && instance != this) {
             Destroy(instance);
         }else {
@@ -35,6 +37,10 @@ public class GameManager : MonoBehaviour {
         }
         
     }
+    private void OnDestroy(){
+        Monitor.StopMonitoring(this);
+    }
+    
     public void RegisterGame(Guid gameId , string xUser,string oUser){
         activeGame = new Game{
             id = gameId,
@@ -57,8 +63,6 @@ public class GameManager : MonoBehaviour {
     }
 
 }
-
-[Serializable]
 public class Game{
     public Guid? id;
     public string xUser;
@@ -70,8 +74,7 @@ public class Game{
         currentUser = GetOpponent(currentUser);
     }
 
-    public MarkType GetPlayerType(string actor)
-    {
+    public MarkType GetPlayerType(string actor) {
         if(actor == xUser){
             return MarkType.X;
         }else{
@@ -85,5 +88,10 @@ public class Game{
         }else{
             return xUser;
         }
+    }
+
+    public void ResetGame()
+    {
+        currentUser = xUser;
     }
 }

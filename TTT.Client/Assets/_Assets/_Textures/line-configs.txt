@@ -1,0 +1,15 @@
+private Dictionary<WinLineType, LineConfig> InitLineConfigs()
+{
+	return new Dictionary<WinLineType, LineConfig>
+	{
+		{ WinLineType.None, new LineConfig() },
+		{ WinLineType.Diagonal, new LineConfig() { Height = 370f,  ZRotation = 45f, X = 0f, Y = 0f } },
+		{ WinLineType.AntiDiagonal, new LineConfig() { Height = 370f,  ZRotation = -45f, X = 0f, Y = 0f } },
+		{ WinLineType.ColLeft, new LineConfig() { Height = 290f,  ZRotation = 0f, X = -94f, Y = 0f } },
+		{ WinLineType.ColMid, new LineConfig() {  Height = 290f,  ZRotation = 0f, X = 0f, Y = 0f } },
+		{ WinLineType.ColRight, new LineConfig() {  Height = 290f,  ZRotation = 0f, X = 94f, Y = 0f } },
+		{ WinLineType.RowTop, new LineConfig() {  Height = 290f,  ZRotation = 90f, X = 0, Y = 94f } },
+		{ WinLineType.RowMiddle, new LineConfig() {  Height = 290f,  ZRotation = 90f, X = 0, Y = 0f } },
+		{ WinLineType.RowBottom, new LineConfig() {  Height = 290f,  ZRotation = 90f, X = 0, Y = -94f } },
+	};
+}

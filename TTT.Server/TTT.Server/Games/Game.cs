@@ -167,6 +167,40 @@ namespace TTT.Server.Games
                 oWins++;
             }
         }
+
+        public void SetRematchReadiness(string userId) {
+            var playerType = GetPlayerType(userId);
+            if(playerType == MarkType.X)
+            {
+                xWantsRematch = true;
+            }
+            else
+            {
+                oWantsRematch = true;
+            }
+        }
+
+        public bool BothPlayerReady()
+        {
+            return xWantsRematch && oWantsRematch;
+        }
+
+        public void NewRound()
+        {
+            CurrentRoundStartTime = DateTime.UtcNow;
+            ResetGrid();
+            currentUser = xUser;
+        }
+
+        private void ResetGrid()
+        {
+            for (int row = 0; row < GRID_SIZE; row++) {
+                for(int col = 0; col < GRID_SIZE; col++)
+                {
+                    grid[row, col] = 0;
+                }
+            }
+        }
     }
     public struct MarkedResult
     {

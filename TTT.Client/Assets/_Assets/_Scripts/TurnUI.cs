@@ -3,6 +3,9 @@ using UnityEngine;
 using TTT.Server.Network_Shared.Models;
 public class TurnUI : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI turnInfoText;
+    private void Start(){
+        RefreshTurn();
+    }
     public void RefreshTurn(){
         var myColor = GameManager.instance.myType == MarkType.X ? "blue":"red";
         var opponentColor = GameManager.instance.opponentType == MarkType.X ? "blue":"red";
