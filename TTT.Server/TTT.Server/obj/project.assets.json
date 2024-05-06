@@ -8397,11 +8397,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\abc4d\\Documents\\MyDreamgame\\Unity Projets\\TTT.Server\\TTT.Server\\TTT.Server.csproj",
+      "projectUniqueName": "C:\\Users\\abc4d\\Documents\\MyDreamgame\\Unity Projets\\TTT-Multiplayer-Dedicated\\TTT.Server\\TTT.Server\\TTT.Server.csproj",
       "projectName": "TTT.Server",
-      "projectPath": "C:\\Users\\abc4d\\Documents\\MyDreamgame\\Unity Projets\\TTT.Server\\TTT.Server\\TTT.Server.csproj",
+      "projectPath": "C:\\Users\\abc4d\\Documents\\MyDreamgame\\Unity Projets\\TTT-Multiplayer-Dedicated\\TTT.Server\\TTT.Server\\TTT.Server.csproj",
       "packagesPath": "C:\\Users\\abc4d\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\abc4d\\Documents\\MyDreamgame\\Unity Projets\\TTT.Server\\TTT.Server\\obj\\",
+      "outputPath": "C:\\Users\\abc4d\\Documents\\MyDreamgame\\Unity Projets\\TTT-Multiplayer-Dedicated\\TTT.Server\\TTT.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\abc4d\\AppData\\Roaming\\NuGet\\NuGet.Config",

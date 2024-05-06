@@ -1,15 +1,12 @@
+using System;
+using System.Net;
+using UnityEngine;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Network_Shared;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using TTT.Server.Network_Shared.Packet_Handlers;
 using TTT.Server.Network_Shared.Registery;
-using UnityEngine;
+using TTT.Server.Network_Shared.Packet_Handlers;
 
 public class NetworkClient : MonoBehaviour,INetEventListener {
     public static NetworkClient instance { get; private set; }
@@ -23,15 +20,27 @@ public class NetworkClient : MonoBehaviour,INetEventListener {
 
 
     private void Awake() {
-        if(instance == null) {
-            instance = this;
-        }else {
+        if(instance != null && instance != this) {
             Destroy(instance);
+        }else {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         
     }
     private void Start() {
         Init();
+    }
+    private void OnDestroy(){
+        if(server != null){
+            netManager.Stop();
+        }
+    }
+    private void OnApplicationQuit(){
+        Disconnet();
+    }
+    public void Disconnet(){
+        netManager.DisconnectAll();
     }
     private void Update() {
         netManager.PollEvents();
@@ -113,6 +122,6 @@ public class NetworkClient : MonoBehaviour,INetEventListener {
     {
         Debug.Log("Lost Connection to Sever");
     }
-
+    
     
 }

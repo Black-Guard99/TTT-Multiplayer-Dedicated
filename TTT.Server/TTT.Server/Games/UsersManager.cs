@@ -1,10 +1,12 @@
 ﻿using LiteNetLib;
+using Microsoft.AspNetCore.Hosting.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TTT.Server.Data;
+using TTT.Server.Network_Shared.Packets.Server_Client;
 
 namespace TTT.Server.Games {
 
@@ -13,9 +15,12 @@ namespace TTT.Server.Games {
 
         private Dictionary<int, ServerConnection> connections = new Dictionary<int, ServerConnection>();
         private readonly IUserRepository userRepository;
-        public UsersManager(IUserRepository usersRepos) {
+        private readonly NetworkServer server;
+
+        public UsersManager(IUserRepository usersRepos,NetworkServer server) {
             connections = new Dictionary<int, ServerConnection>();
             userRepository = usersRepos;
+            this.server = server;
         }
         public void AddConnections(NetPeer peer)
         {
@@ -53,25 +58,66 @@ namespace TTT.Server.Games {
             return true;
         }
 
-        public void DisConnect(int peerId) {
+        public void Disconnect(int peerId) {
             var connection = GetConnection(peerId);
-            if(connection.user  != null)
+            if (connection.user != null)
             {
                 var userId = connection.user.id;
                 userRepository.SetOffline(userId);
+                //userRepository.SetOffline(userId);
 
                 // Match Macking Unregseter.
 
                 // gameManager CloseGame...........
+
+
+                NotifiOtherPlayer(peerId);
             }
             connections.Remove(peerId);
         }
 
-        public ServerConnection GetConnection(int id) {
-            return connections[id];
+        public ServerConnection GetConnection(int peerId) {
+            return connections[peerId];
+        }
+        public ServerConnection GetConnection(string userId)
+        {
+            return connections.FirstOrDefault(x => x.Value.user.id == userId).Value;
         }
         public int[] GetOtherConnectionsIds(int excludedconnectionId) {
             return connections.Keys.Where(y => y != excludedconnectionId).ToArray();
+        }
+
+        public PlayerNetDTO[] GetTopPlayers()
+        {
+            return userRepository.GetQuerry().OrderByDescending(x => x.score).Select(u=> new PlayerNetDTO
+            {
+                userName = u.id,
+                score = u.score,
+                isOnline = u.IsOnline,
+            }).Take(9).ToArray();
+        }
+        private void NotifiOtherPlayer(int excludedconnectionId)
+        {
+            // TODO : Impletemt Fully........
+            var rsmg = new NetOnServerStatus
+            {
+                playerCount = userRepository.GetTotalCount(),
+                topPlayer = GetTopPlayers()
+            };
+            var otherIds = GetOtherConnectionsIds(excludedconnectionId);
+
+            foreach (var otherId in otherIds)
+            {
+                server.SendClient(otherId, rsmg);
+            }
+
+        }
+
+        public void IncreaseScore(string userId)
+        {
+            var user = userRepository.Get(userId);
+            user.score = 10;
+            userRepository.Update(user);
         }
     }
 }

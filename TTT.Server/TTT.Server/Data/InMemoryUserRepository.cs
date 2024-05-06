@@ -12,11 +12,11 @@ namespace TTT.Server.Data
         {
             _entities = new List<User>()
             {
-                new User
+                /*new User
                 {
                     id  = "Hero1",
                     password = "1234",
-                    IsOnline = true,
+                    IsOnline = false,
                     score = 10,
                 },
                 new User
@@ -32,7 +32,7 @@ namespace TTT.Server.Data
                     password = "2345",
                     IsOnline = true,
                     score = 100,
-                }
+                }*/
             };
         }
         public void Add(User entity) {
@@ -62,12 +62,12 @@ namespace TTT.Server.Data
 
         public void SetOffline(string id)
         {
-            _entities.FirstOrDefault(x => x.IsOnline = false);
+            _entities.FirstOrDefault(x => x.id == id).IsOnline = false;
         }
 
         public void SetOnline(string id)
         {
-            _entities.FirstOrDefault(x => x.IsOnline = true);
+            _entities.FirstOrDefault(x => x.id == id).IsOnline = true;
         }
 
         public void Update(User entity)

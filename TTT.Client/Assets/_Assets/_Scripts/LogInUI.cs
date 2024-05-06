@@ -73,5 +73,6 @@ public class LogInUI : MonoBehaviour {
             Password = password 
         };
         NetworkClient.instance.SendServer(authRequest);
+        GameManager.instance.myUserName = username;
     }
 }

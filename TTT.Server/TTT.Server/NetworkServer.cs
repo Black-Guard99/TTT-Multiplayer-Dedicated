@@ -100,7 +100,7 @@ namespace TTT.Server
             //connectionRequestsDictionary.Remove(peer.Id);
             var connection = usersManager.GetConnection(peer.Id);
             _netManager.DisconnectPeer(peer);
-            usersManager.DisConnect(peer.Id);
+            usersManager.Disconnect(peer.Id);
 
             logger.LogInformation($"{connection?.user?.id} disconnnected: {peer.Address}");
         }

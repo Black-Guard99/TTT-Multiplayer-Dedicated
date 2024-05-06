@@ -12,6 +12,7 @@ using TTT.Server.Games;
 using TTT.Server.Network_Shared.Packets.Server_Client;
 using TTT.Server.Network_Shared.Registery;
 using TTT.Server.Network_Shared.Packet_Handlers;
+using TTT.Server.Data;
 
 namespace TTT.Server.Packet_Handlers {
 
@@ -20,10 +21,13 @@ namespace TTT.Server.Packet_Handlers {
         private readonly ILogger<AuthRequestHandler> _logger;
         private readonly UsersManager usersManager;
         private readonly NetworkServer server;
-        public AuthRequestHandler(ILogger<AuthRequestHandler> logger, UsersManager usersManager,NetworkServer server) {
+        private readonly IUserRepository userRepository;
+
+        public AuthRequestHandler(ILogger<AuthRequestHandler> logger, UsersManager usersManager,NetworkServer server,IUserRepository userRepository) {
             _logger = logger;
             this.usersManager = usersManager;
             this.server = server;
+            this.userRepository = userRepository;
         }
         public void Handle(INetPacket packet, int connectionId) {
             var message = (NetAuthRequest)packet;
@@ -52,7 +56,11 @@ namespace TTT.Server.Packet_Handlers {
 
         private void NotifiOtherPlayer(int excludedconnectionId) {
             // TODO : Impletemt Fully........
-            var rsmg = new NetOnServerStatus();
+            var rsmg = new NetOnServerStatus
+            {
+                playerCount = userRepository.GetTotalCount(),
+                topPlayer = usersManager.GetTopPlayers()
+            };
             var otherIds = usersManager.GetOtherConnectionsIds(excludedconnectionId);
 
             foreach (var otherId in otherIds)
