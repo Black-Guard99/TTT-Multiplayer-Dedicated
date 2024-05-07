@@ -77,6 +77,8 @@ namespace TTT.Server.Matchmaking
                     gameId = gameId,
                     xUser = request.connections.user.id,
                     oUser = match.connections.user.id,
+                    xScore = request.connections.user.score,
+                    oScore = match.connections.user.score,
                 };
                 var p1 = request.connections.connetionId;
                 var p2 = match.connections.connetionId;

@@ -41,11 +41,13 @@ public class GameManager : MonoBehaviour {
         Monitor.StopMonitoring(this);
     }
     
-    public void RegisterGame(Guid gameId , string xUser,string oUser){
+    public void RegisterGame(Guid gameId , string xUser,string oUser,int xScore,int oScore){
         activeGame = new Game{
             id = gameId,
             xUser = xUser,
             oUser = oUser,
+            xUserScore = xScore,
+            oUserScore = oScore,
             startTime = DateTime.UtcNow,
             currentUser = xUser
         };
@@ -67,6 +69,8 @@ public class Game{
     public Guid? id;
     public string xUser;
     public string oUser;
+    public int xUserScore;
+    public int oUserScore;
     public string currentUser;
     public DateTime startTime;
     public DateTime endTime;

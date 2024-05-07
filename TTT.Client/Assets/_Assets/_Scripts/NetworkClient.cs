@@ -16,7 +16,7 @@ public class NetworkClient : MonoBehaviour,INetEventListener {
     private NetDataWriter writer;
     private PacketRegistery packetRegistery;
     private HandleRegistery registeryHandler;
-    public Action OnPeerConnectdAction;
+    public event Action OnPeerConnectedAction;
 
 
     private void Awake() {
@@ -37,20 +37,19 @@ public class NetworkClient : MonoBehaviour,INetEventListener {
         }
     }
     private void OnApplicationQuit(){
-        Disconnet();
+        Disconnect();
     }
-    public void Disconnet(){
+    public void Disconnect(){
         netManager.DisconnectAll();
     }
     private void Update() {
         netManager.PollEvents();
     }
-    private void Init() {
+    public void Init() {
         packetRegistery = new PacketRegistery();
         registeryHandler = new HandleRegistery();
         writer = new NetDataWriter();
-        netManager = new NetManager(this)
-        {
+        netManager = new NetManager(this) {
             DisconnectTimeout = 10000000
         };
         netManager.Start();
@@ -115,7 +114,7 @@ public class NetworkClient : MonoBehaviour,INetEventListener {
     public void OnPeerConnected(NetPeer peer) {
         Debug.Log("Connected to Server " +  peer);
         server = peer;
-        OnPeerConnectdAction?.Invoke();
+        OnPeerConnectedAction?.Invoke();
     }
 
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)

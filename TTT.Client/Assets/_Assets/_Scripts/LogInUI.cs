@@ -17,10 +17,10 @@ public class LogInUI : MonoBehaviour {
     [SerializeField] private Button logInBtn;
 
     [SerializeField] private bool isConnected;
-    private void Start()
-    {
-        NetworkClient.instance.OnPeerConnectdAction += NetworkClient_OnServerConnectd;
+    private void Start() {
+        NetworkClient.instance.OnPeerConnectedAction += NetworkClient_OnServerConnectd;
         OnAuthFaildHandler.OnAuthFail += OnErrorAuth;
+        // NetworkClient.instance.Init();
     }
     private void OnErrorAuth(NetOnAuthFail netOnAuthFail) {
         Debug.Log("Authentication Failed Due to Password Wrong");
@@ -28,7 +28,7 @@ public class LogInUI : MonoBehaviour {
         password = string.Empty;
     }
     private void OnDestroy() {
-        NetworkClient.instance.OnPeerConnectdAction -= NetworkClient_OnServerConnectd;
+        NetworkClient.instance.OnPeerConnectedAction -= NetworkClient_OnServerConnectd;
         OnAuthFaildHandler.OnAuthFail -= OnErrorAuth;
     }
     private void NetworkClient_OnServerConnectd() {
@@ -52,8 +52,8 @@ public class LogInUI : MonoBehaviour {
     public void LogIn()
     {
         logInBtn.interactable = false;
-        StopCoroutine(LoginRoutine());
-        StartCoroutine(LoginRoutine());
+        StopCoroutine(nameof(LoginRoutine));
+        StartCoroutine(nameof(LoginRoutine));
     }
 
     private IEnumerator LoginRoutine() {

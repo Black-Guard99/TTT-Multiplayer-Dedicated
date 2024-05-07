@@ -41,10 +41,13 @@ public class LobbyUI : MonoBehaviour {
         }
     }
     public void TryDisconnect(){
-        NetworkClient.instance.Disconnet();
-        SceneManager.LoadScene(0);
+        NetworkClient.instance.Disconnect();
+        StartCoroutine(LoadBackToLogin());
     }
-    
+    private IEnumerator LoadBackToLogin(){
+        yield return new WaitForSeconds(.5f);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex - 1);
+    }
     private void RequestServerStatus() {
         var msg = new NetServerStatusRequest();
         NetworkClient.instance.SendServer(msg);

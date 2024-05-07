@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using TTT.Server.Network_Shared.Models;
+using TTT.Server.Network_Shared.Packets.Client_Server;
 using TTT.Server.Network_Shared.Packets.Server_Client;
 using UnityEngine;
 public class GameUI : MonoBehaviour {
@@ -22,17 +24,25 @@ public class GameUI : MonoBehaviour {
         InitHeaders();
         OnMarkedCellHandler.onMarkedCell += UpdateBoard;
         OnNewRoundHandler.onNewround += BoardReset;
+        OnSurrenderHandler.onSurrender += HandleSurrender;
         BoardReset();
     }
+
+    private void HandleSurrender(NetOnSurrender surrender) {
+        Debug.LogError(surrender.winner + " Won the Game with Surrender");
+        StartCoroutine(ShowEndRoundRoutine(surrender.winner,false));
+    }
+
     private void OnDestroy(){
         OnMarkedCellHandler.onMarkedCell -= UpdateBoard;
         OnNewRoundHandler.onNewround -= BoardReset;
+        OnSurrenderHandler.onSurrender -= HandleSurrender;
     }
     private void UpdateBoard(NetOnMarkedCell msg){
         gridInteractionCellDisctionary[msg.index].UpdateUI(msg.actor);
-        if(msg.markedOutCome != TTT.Server.Network_Shared.Models.MarkedOutCome.None){
+        if(msg.markedOutCome != MarkedOutCome.None){
 
-            var draw = msg.markedOutCome == TTT.Server.Network_Shared.Models.MarkedOutCome.Draw;
+            var draw = msg.markedOutCome == MarkedOutCome.Draw;
             Debug.Log("Showing End Screen For Draw");
             // StopCoroutine(nameof(ShowEndRoundRoutine));
             StartCoroutine(ShowEndRoundRoutine(msg.actor,draw));
@@ -61,6 +71,9 @@ public class GameUI : MonoBehaviour {
         var game = GameManager.instance.activeGame;
         xUserName.SetText("[x] " + game.xUser);
         oUserName.SetText("[o] " + game.oUser);
+        xScore = GameManager.instance.activeGame.xUserScore;
+        oScore = GameManager.instance.activeGame.oUserScore;
+        
         xUserScore.SetText(xScore.ToString());
         oUserScore.SetText(oScore.ToString());
     }
@@ -77,5 +90,9 @@ public class GameUI : MonoBehaviour {
             gridInteractionCellDisctionary.Add(i,gridInteractionItem);
             gridInteractionItem.SetData((byte)i);
         }
+    }
+    public void SurrenderGame(){
+        var msg = new NetSurrenderRequest();
+        NetworkClient.instance.SendServer(msg);
     }
 }

@@ -14,6 +14,8 @@ namespace TTT.Server.Network_Shared.Packets.Server_Client
 
         public string xUser {  get; set; }
         public string oUser { get; set; }
+        public int xScore {  get; set; }
+        public int oScore { get; set; }
         public Guid gameId { get; set; }
 
 
@@ -21,6 +23,8 @@ namespace TTT.Server.Network_Shared.Packets.Server_Client
         {
             xUser = reader.GetString();
             oUser = reader.GetString();
+            xScore = (int)reader.GetByte();
+            oScore = (int)reader.GetByte();
             gameId = Guid.Parse(reader.GetString());
         }
 
@@ -29,6 +33,8 @@ namespace TTT.Server.Network_Shared.Packets.Server_Client
             writer.Put((byte)Type);
             writer.Put(xUser);
             writer.Put(oUser);
+            writer.Put((byte)xScore);
+            writer.Put((byte)oScore);
             writer.Put(gameId.ToString());
         }
     }
