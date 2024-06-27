@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TTT.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79f1a0096f480fc8ef038d275d28d9815b1f10ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40e5460ff39569107b96f9131483d602603b7a12")]
 [assembly: System.Reflection.AssemblyProductAttribute("TTT.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TTT.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
