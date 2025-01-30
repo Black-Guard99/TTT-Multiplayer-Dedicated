@@ -8,6 +8,10 @@ namespace Network_Shared.Attributes {
             PacketType = type;
         }
         public PacketType PacketType { get; set; }
+
+
+
+        
     }
 }
 
