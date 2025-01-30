@@ -11,6 +11,8 @@ public class EndUI : MonoBehaviour {
     [SerializeField] private GameObject windowView;
     [SerializeField] private GameObject requestRematchBtn,acceptRematchBtn;
     [SerializeField] private Image headerBgImage;
+
+    
     [SerializeField] private TextMeshProUGUI headerResultText,requestingInfoText;
     private bool opponenetLeft = false;
     private void Start(){
